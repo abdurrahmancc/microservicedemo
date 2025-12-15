@@ -1,6 +1,11 @@
-﻿namespace Basket.API.Repositories
+﻿using Basket.API.Models;
+
+namespace Basket.API.Repositories
 {
-    public class IBasketRepository
+    public interface IBasketRepository
     {
+        Task<ShoppingCart> GetBasket(string userName);
+        Task<ShoppingCart> UpdateBasket(ShoppingCart basket);
+        Task DeleteBasket(string userName);
     }
 }
