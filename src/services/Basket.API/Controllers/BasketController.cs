@@ -13,13 +13,13 @@ namespace Basket.API.Controllers
     public class BasketController : BaseController
     {
         IBasketRepository _basketRepository;
-        //DiscountGrpcService _discountGrpcService;
+        DiscountGrpcService _discountGrpcService;
         //private readonly IPublishEndpoint _publishEndpoint;
         //IMapper _mapper;
-        public BasketController(IBasketRepository basketRepository)
+        public BasketController(IBasketRepository basketRepository, DiscountGrpcService discountGrpcService)
         {
             _basketRepository = basketRepository;
-            //_discountGrpcService = discountGrpcService;
+            _discountGrpcService = discountGrpcService;
             //_publishEndpoint = publishEndpoint;
             //_mapper = mapper;
         }
@@ -47,11 +47,11 @@ namespace Basket.API.Controllers
             {   //TODO: Communicate discount.grpc
                 //calculate latest price
                 //Create discount grpc service
-                //foreach (var item in basket.Items)
-                //{
-                //    var coupon = await _discountGrpcService.GetDiscount(item.ProductId);
-                //    item.Price -= coupon.Amount;
-                //}
+                foreach (var item in basket.Items)
+                {
+                    var coupon = await _discountGrpcService.GetDiscount(item.ProductId);
+                    item.Price -= coupon.Amount;
+                }
                 return CustomResult("Basket modified done.", await _basketRepository.UpdateBasket(basket));
             }
             catch (Exception ex)
